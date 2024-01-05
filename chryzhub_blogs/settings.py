@@ -177,8 +177,8 @@ SITE_ID = 2
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app/static')]
-STATIC_ROOT = os.path.join(BASE_DIR, "cv_build/staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'blog_app/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, "chryzhub_blogs/staticfiles")
 
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
