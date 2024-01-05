@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
-import django_heroku
 import cloudinary_storage
 from decouple import config
 
@@ -30,7 +29,7 @@ SECRET_KEY = str(os.getenv("SECRET_KEY"))
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 
-ALLOWED_HOSTS = ['chryzhub-blogs.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['chryzhub-blogs.onrender.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -63,6 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -103,17 +103,23 @@ WSGI_APPLICATION = 'chryzhub_blogs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": "5432",
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": config("DB_NAME"),
+#         "USER": config("DB_USER"),
+#         "PASSWORD": config("DB_PASSWORD"),
+#         "HOST": config("DB_HOST"),
+#         "PORT": "5432",
+#     }
+# }
 
 
 # Password validation
@@ -165,11 +171,14 @@ USE_TZ = True
 SITE_ID = 2
 
 
-STATIC_URL = "/static/"
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles')]
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, "cv_build/staticfiles")
 
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -200,7 +209,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER=config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
-
-# Activate Django_heroku.
-
-django_heroku.settings(locals())
